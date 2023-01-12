@@ -1,4 +1,5 @@
 from aiogram import Bot, Dispatcher, executor, types
+from aiogram.dispatcher.filters import Text
 from dotenv import load_dotenv
 from os import getenv
 # from constants import HELP_TEXT, START_TEXT
@@ -6,7 +7,26 @@ import logging
 from handlers.start import start_command
 from handlers.help import help_command
 from handlers.pictures import image_sender
+from handlers.shop import shop_start
 from handlers.all_messages import echo
+from handlers.shop_categories import show_books
+
+# Наш бот
+load_dotenv()  # берем переменные окружения из .env
+bot = Bot(getenv('BOT_TOKEN'))
+# Диспетчер, получает сообщения, обрабатывает через обработчик
+dp = Dispatcher(bot)
+# регистрируем обработчики
+dp.register_message_handler(start_command, commands=['start'])
+dp.register_message_handler(help_command, commands=['help'])
+dp.register_message_handler(image_sender, commands=['picture'])
+dp.register_callback_query_handler(shop_start, text='shop_start')
+dp.register_message_handler(show_books, Text(equals='Хочу книги'))
+#всегда в конце
+dp.register_message_handler(echo)
+
+
+
 # # Наш бот
 # load_dotenv()  # берем переменные окружения из .env
 # bot = Bot(getenv('BOT_TOKEN'))
@@ -55,15 +75,4 @@ from handlers.all_messages import echo
 
 if __name__ == "__main__":
 	logging.basicConfig(level=logging.INFO)
-	# Наш бот
-	load_dotenv()  # берем переменные окружения из .env
-	bot = Bot(getenv('BOT_TOKEN'))
-	# Диспетчер, получает сообщения, обрабатывает через обработчик
-	dp = Dispatcher(bot)
-	# регистрируем обработчики
-	dp.register_message_handler(start_command, commands=['start'])
-	dp.register_message_handler(help_command, commands=['help'])
-	dp.register_message_handler(image_sender, commands=['picture'])
-	dp.register_message_handler(echo)
-
 	executor.start_polling(dp, skip_updates=True)
