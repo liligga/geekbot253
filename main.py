@@ -1,5 +1,6 @@
 from aiogram import Bot, Dispatcher, executor, types
 from aiogram.dispatcher.filters import Text
+from aiogram.contrib.fsm_storage.memory import MemoryStorage
 from dotenv import load_dotenv
 from os import getenv
 import logging
@@ -66,7 +67,8 @@ if __name__ == "__main__":
 	load_dotenv()  # берем переменные окружения из .env
 	bot = Bot(getenv('BOT_TOKEN'))
 	# Диспетчер, получает сообщения, обрабатывает через обработчик
-	dp = Dispatcher(bot)
+	storage = MemoryStorage()
+	dp = Dispatcher(bot, storage=storage)
 
 	# регистрируем обработчики
 	dp.register_message_handler(start_command, commands=['start'])
@@ -76,6 +78,10 @@ if __name__ == "__main__":
 	dp.register_message_handler(show_books, Text(equals='Хочу книги'))
 	dp.register_message_handler(pin_messages, commands=['pin'], commands_prefix='!/')
 	dp.register_message_handler(ban_user, commands=['ban'], commands_prefix='!/')
+	dp.message_handler(cancel_handler, state='*', commands='cancel')
+	dp.message_handler(cancel_handler, Text(equals='cancel', ignore_case=True), state='*')
+	dp.message_handler(process_name, state=Form.name)
+	dp.message_handler(process_age, state=Form.age)
 	#всегда в конце
 	dp.register_message_handler(check_curses)
 
