@@ -108,35 +108,52 @@ shop_kb.add(
 
 message.text
 message.chat.type
-message.pin
 message.reply_to_message 
-await message.bot.kick_chat_member(
-	chat_id=message.chat.id
+await message.pin()
+await message.bot.kick_chat_member()
+await message.chat.get_administrators()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+from handlers.admin import (
+	example,
+	check_curses,
+	pin_messages,
+	ban_user
 )
-await message.bot.unban_chat_member(
-	chat_id=message.chat.id,
-	user_id=1
-)
-result = message.answer_dice
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+	dp.register_message_handler(ban_user, commands=['ban'], commands_prefix='!/')
+	dp.register_message_handler(pin_messages, commands=['pin'], commands_prefix='!/')
+	dp.register_message_handler(check_curses)
+	dp.register_message_handler(example)
 
 
 

@@ -2,36 +2,21 @@ from aiogram import Bot, Dispatcher, executor, types
 from aiogram.dispatcher.filters import Text
 from dotenv import load_dotenv
 from os import getenv
-# from constants import HELP_TEXT, START_TEXT
 import logging
+from handlers.constants import HELP_TEXT, START_TEXT
 from handlers.start import start_command
 from handlers.help import help_command
 from handlers.pictures import image_sender
 from handlers.shop import shop_start
 from handlers.all_messages import echo
 from handlers.shop_categories import show_books
-
-# Наш бот
-load_dotenv()  # берем переменные окружения из .env
-bot = Bot(getenv('BOT_TOKEN'))
-# Диспетчер, получает сообщения, обрабатывает через обработчик
-dp = Dispatcher(bot)
-# регистрируем обработчики
-dp.register_message_handler(start_command, commands=['start'])
-dp.register_message_handler(help_command, commands=['help'])
-dp.register_message_handler(image_sender, commands=['picture'])
-dp.register_callback_query_handler(shop_start, text='shop_start')
-dp.register_message_handler(show_books, Text(equals='Хочу книги'))
-#всегда в конце
-dp.register_message_handler(echo)
-
-
-
-# # Наш бот
-# load_dotenv()  # берем переменные окружения из .env
-# bot = Bot(getenv('BOT_TOKEN'))
-# # Диспетчер, получает сообщения, обрабатывает через обработчик
-# dp = Dispatcher(bot)
+from handlers.admin import example
+from handlers.admin import (
+	example,
+	check_curses,
+	pin_messages,
+	ban_user
+)
 
 
 # @dp.message_handler(commands=["start"])
@@ -39,7 +24,9 @@ dp.register_message_handler(echo)
 # 	"""
 # 		Функция приветствия пользователя по имени
 # 	"""
-# 	await message.answer(text=START_TEXT.format(first_name=message.from_user.first_name))
+# 	await message.answer(text=START_TEXT.format(
+# 		first_name=message.from_user.first_name)
+# 	)
 # 	await message.delete()
 
 
@@ -75,4 +62,22 @@ dp.register_message_handler(echo)
 
 if __name__ == "__main__":
 	logging.basicConfig(level=logging.INFO)
+	# Наш бот
+	load_dotenv()  # берем переменные окружения из .env
+	bot = Bot(getenv('BOT_TOKEN'))
+	# Диспетчер, получает сообщения, обрабатывает через обработчик
+	dp = Dispatcher(bot)
+
+	# регистрируем обработчики
+	dp.register_message_handler(start_command, commands=['start'])
+	dp.register_message_handler(help_command, commands=['help'])
+	dp.register_message_handler(image_sender, commands=['picture'])
+	dp.register_callback_query_handler(shop_start, text='shop_start')
+	dp.register_message_handler(show_books, Text(equals='Хочу книги'))
+	dp.register_message_handler(pin_messages, commands=['pin'], commands_prefix='!/')
+	dp.register_message_handler(ban_user, commands=['ban'], commands_prefix='!/')
+	#всегда в конце
+	dp.register_message_handler(check_curses)
+
+
 	executor.start_polling(dp, skip_updates=True)

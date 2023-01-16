@@ -1,7 +1,6 @@
 from aiogram import types
 
 
-# @dp.message_handler(commands=["picture"])
 async def image_sender(message: types.Message):
 	"""
 		Функция ответа пользователю картинкой
