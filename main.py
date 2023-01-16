@@ -19,46 +19,16 @@ from handlers.admin import (
 	ban_user
 )
 
+from handlers.user_info_form import (
+	Form,
+	cancel_handler,
+	form_start,
+	process_name,
+	process_age,
+	process_day,
+	process_done
+)
 
-# @dp.message_handler(commands=["start"])
-# async def start_command(message: types.Message):
-# 	"""
-# 		Функция приветствия пользователя по имени
-# 	"""
-# 	await message.answer(text=START_TEXT.format(
-# 		first_name=message.from_user.first_name)
-# 	)
-# 	await message.delete()
-
-
-
-# @dp.message_handler(commands=["help"])
-# async def help_command(message: types.Message):
-# 	"""
-# 		Показываем все команды пользователю
-# 	"""
-# 	await message.answer(text=HELP_TEXT)
-# 	await message.delete()
-
-
-# @dp.message_handler(commands=["picture"])
-# async def image_sender(message: types.Message):
-# 	"""
-# 		Функция ответа пользователю картинкой
-# 	"""
-# 	await message.answer_photo(
-#         open('./images/cat.webp', 'rb'), 
-#         caption="Умный кот"
-#     )
-# 	await message.delete()
-
-
-# @dp.message_handler()
-# async def echo(message: types.Message):
-# 	"""
-# 		Функция ответа пользователю заглавными буквами
-# 	"""
-# 	await message.reply(text=message.text.upper())
 
 
 if __name__ == "__main__":
@@ -74,14 +44,18 @@ if __name__ == "__main__":
 	dp.register_message_handler(start_command, commands=['start'])
 	dp.register_message_handler(help_command, commands=['help'])
 	dp.register_message_handler(image_sender, commands=['picture'])
+	dp.register_message_handler(form_start, commands=['form'])
+	dp.register_message_handler(form_start, Text(equals='Нет'), state=Form.done)
 	dp.register_callback_query_handler(shop_start, text='shop_start')
 	dp.register_message_handler(show_books, Text(equals='Хочу книги'))
 	dp.register_message_handler(pin_messages, commands=['pin'], commands_prefix='!/')
 	dp.register_message_handler(ban_user, commands=['ban'], commands_prefix='!/')
-	dp.message_handler(cancel_handler, state='*', commands='cancel')
-	dp.message_handler(cancel_handler, Text(equals='cancel', ignore_case=True), state='*')
-	dp.message_handler(process_name, state=Form.name)
-	dp.message_handler(process_age, state=Form.age)
+	dp.register_message_handler(cancel_handler, state='*', commands='cancel')
+	dp.register_message_handler(cancel_handler, Text(equals='cancel', ignore_case=True), state='*')
+	dp.register_message_handler(process_name, state=Form.name)
+	dp.register_message_handler(process_age, state=Form.age)
+	dp.register_message_handler(process_day, state=Form.day)
+	dp.register_message_handler(process_done,  Text(equals='Да'),state=Form.done)
 	#всегда в конце
 	dp.register_message_handler(check_curses)
 
