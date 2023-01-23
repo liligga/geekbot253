@@ -1,0 +1,130 @@
+from db.base import (
+	init_db,
+	create_tables,
+	populate_products
+)
+
+
+async def start_up(_):
+	print("helo")
+	init_db()
+	create_tables()
+	populate_products()
+
+
+..............
+	executor.start_polling(
+		dp,
+		skip_updates=True,
+		on_startup=start_up
+	)
+
+
+
+
+
+
+
+
+===========================================
+
+
+
+
+
+async def show_books(message: types.Message):
+	"""
+		Показываем пользователю список книг
+	"""
+	product = get_products()[0]
+	await message.answer(text="Вот наши книги:")
+	await message.answer_photo(
+		open(product[4], 'rb'),
+		caption=f"Товар: {product[1]}, Цена: {product[3]},Описание: {product[2]}",
+		reply_markup=buy_item_kb
+	)
+
+
+
+
+
+
+
+
+================================================
+
+def buy_keyboard(product_id):
+	buy_item_kb = InlineKeyboardMarkup()
+	buy_item_kb.add(
+		InlineKeyboardButton('Купить', callback_data=f'buy_item {product_id}')
+	)
+	return buy_item_kb
+
+
+
+	dp.register_callback_query_handler(form_start, Text(startswith='buy_item '))
+
+
+
+
+
+
+
+
+
+
+
+
+
+====================================================
+class Form(StatesGroup):
+    product_id = State()
+
+
+async def form_start(cb: types.CallbackQuery, state: FSMContext):
+    """
+    Стартуем наш FSM, задаем первый вопрос
+    """
+    await Form.product_id.set()
+    async with state.proxy() as data:
+        data['product_id'] = int(cb.data.replace('buy_item ', ''))
+
+    await Form.next()
+    await cb.bot.send_message(
+        chat_id = cb.from_user.id,
+        text = "Введите ваше имя"
+    )
+
+
+
+
+
+
+
+====================================================
+async def process_done(message: types.Message, state: FSMContext):
+    async with state.proxy() as data:
+        create_order(data)
+    
+    .......
+
+
+
+
+def create_order(data):
+    """
+    Создаем заказ
+    """
+    print(data.as_dict())
+    data = data.as_dict()
+    cur.execute("""INSERT INTO orders (
+        user_name,
+        address,
+        week_day,
+        product_id
+    ) VALUES (:user_name, :address, :week_day, :product_id)""", 
+        {'user_name': data['name'],
+        'address': data['address'],
+        'week_day': data['day'],
+        'product_id': data['product_id']}
+    )

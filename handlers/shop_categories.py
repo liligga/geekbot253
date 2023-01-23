@@ -1,5 +1,6 @@
 from aiogram import types
 from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup
+from db.base import get_products
 
 
 buy_item_kb = InlineKeyboardMarkup()
@@ -12,7 +13,10 @@ async def show_books(message: types.Message):
 	"""
 		Показываем пользователю список книг
 	"""
+
 	await message.answer(text="Вот наши книги:")
-	await message.answer(text="Книга 1", reply_markup=buy_item_kb)
-	await message.answer(text="Книга 2", reply_markup=buy_item_kb)
-	await message.answer(text="Книга 3", reply_markup=buy_item_kb)
+	await message.answer_photo(
+		open('./images/cat.webp', 'rb'),
+		caption=f"Товар: Книга 1, Описание: Великолепная книга"
+	)
+

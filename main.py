@@ -24,7 +24,7 @@ from handlers.user_info_form import (
 	cancel_handler,
 	form_start,
 	process_name,
-	process_age,
+	process_address,
 	process_day,
 	process_done
 )
@@ -40,6 +40,7 @@ if __name__ == "__main__":
 	storage = MemoryStorage()
 	dp = Dispatcher(bot, storage=storage)
 
+
 	# регистрируем обработчики
 	dp.register_message_handler(start_command, commands=['start'])
 	dp.register_message_handler(help_command, commands=['help'])
@@ -53,11 +54,14 @@ if __name__ == "__main__":
 	dp.register_message_handler(cancel_handler, state='*', commands='cancel')
 	dp.register_message_handler(cancel_handler, Text(equals='cancel', ignore_case=True), state='*')
 	dp.register_message_handler(process_name, state=Form.name)
-	dp.register_message_handler(process_age, state=Form.age)
+	dp.register_message_handler(process_address, state=Form.address)
 	dp.register_message_handler(process_day, state=Form.day)
 	dp.register_message_handler(process_done,  Text(equals='Да'),state=Form.done)
 	#всегда в конце
 	dp.register_message_handler(check_curses)
 
 
-	executor.start_polling(dp, skip_updates=True)
+	executor.start_polling(
+		dp,
+		skip_updates=True
+	)

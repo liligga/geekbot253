@@ -1,24 +1,22 @@
-import datetime
 import sqlite3
 from pathlib import Path
 
 
-DB_NAME = 'db.sqlite'
-MAIN_PATH = Path(__file__).parent.parent
-connection = sqlite3.connect(MAIN_PATH/DB_NAME)
-cur = connection.cursor()
+def init_db():
+    global db, cur
+    DB_NAME = 'db.sqlite'
+    MAIN_PATH = Path(__file__).parent.parent
+    db = sqlite3.connect(MAIN_PATH/DB_NAME)
+    cur = db.cursor()
 
 
-def create_tables(cur):
-    """
-    для создания таблиц 'Товары' 
-    и 'Заказы' в БД.
-    """
+def create_tables():
     cur.execute(
         """CREATE TABLE IF NOT EXISTS products(
             product_id INTEGER PRIMARY KEY,
             name TEXT,
             description TEXT,
+            price INTEGER,
             photo TEXT
         )"""
     )
@@ -35,35 +33,35 @@ def create_tables(cur):
         )
         """
     )
-    
+    db.commit()
 
 
-def populate_products(cur):
+def populate_products():
     """
     Заполняем таблицу товаров
     """
-    cur.execute("""INSERT INTO products (
-        name, description, photo
+    db.execute("""INSERT INTO products (
+        name, description, price, photo
     )
-    VALUES(1, 'Книга 1',
-    'Очень интересная книга',
-    './images/cat.webp')
+    VALUES ('Книга 1', 'Очень интересная книга', 300, './images/cat.webp'),
+    ('Книга 2',  'Очень интересная книга', 100, './images/cat.webp'),
+    ('Книга 3', 'Очень интересная книга', 200, './images/cat.webp')
     """)
+    db.commit()
 
 
-
-
-def get_products(cur):
+def get_products():
     """
-    Достаем товары из таблицы, по страницам
+    Достаем товары из таблицы
     """
+    print(cur)
     cur.execute("""
     SELECT * FROM products
     """)
     return cur.fetchall()
 
 
-def create_order(cur):
+def create_order(data):
     """
     Создаем заказ
     """
@@ -73,9 +71,6 @@ def create_order(cur):
         week_day,
         product_id
     ) VALUES (?, ?, ?, ?)""")
+    db.commit()
 
-create_tables(cur)
-# populate_products(cur)
 
-connection.commit()
-connection.close()
