@@ -31,6 +31,7 @@ from handlers.user_info_form import (
 
 
 
+
 if __name__ == "__main__":
 	logging.basicConfig(level=logging.INFO)
 	# Наш бот

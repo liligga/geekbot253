@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "1c46142a5c228188e895f0bb281a930a17477692a34a5187efd5b35d17e873a3"
+            "sha256": "74cb78432cc5df607a85a0504146dbc94e9a1efad76c18d07b0ca578d28a8de8"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -124,6 +124,13 @@
             ],
             "markers": "python_version >= '3.6'",
             "version": "==3.8.3"
+        },
+        "aioschedule": {
+            "hashes": [
+                "sha256:1fe8621d287f58cbba3d73695fbbd890355294ac0c01981a1fd1e4f0510fc744"
+            ],
+            "index": "pypi",
+            "version": "==0.5.2"
         },
         "aiosignal": {
             "hashes": [
@@ -351,11 +358,11 @@
         },
         "python-dotenv": {
             "hashes": [
-                "sha256:1684eb44636dd462b66c3ee016599815514527ad99965de77f43e0944634a7e5",
-                "sha256:b77d08274639e3d34145dfa6c7008e66df0f04b7be7a75fd0d5292c191d79045"
+                "sha256:1c93de8f636cde3ce377292818d0e440b6e45a82f215c3744979151fa8151c49",
+                "sha256:41e12e0318bebc859fcc4d97d4db8d20ad21721a6aa5047dd59f090391cb549a"
             ],
             "index": "pypi",
-            "version": "==0.21.0"
+            "version": "==0.21.1"
         },
         "pytz": {
             "hashes": [

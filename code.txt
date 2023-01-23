@@ -128,3 +128,59 @@ def create_order(data):
         'week_day': data['day'],
         'product_id': data['product_id']}
     )
+
+
+
+
+
+
+
+
+
+========================================
+
+config.py
+
+main.py
+	dp.register_message_handler(notify_command, Text(startswith='напомни'))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+====================================
+from config import bot
+import aioschedule
+import asyncio
+from aiogram import types
+
+
+
+
+
+
+
+
+
+
+
+
+async def schedule():
+    aioschedule.every(3).seconds.do(notification)
+
+    while True:
+        await aioschedule.run_pending()
+        await asyncio.sleep(1)

@@ -17,6 +17,7 @@ async def show_books(message: types.Message):
 	await message.answer(text="Вот наши книги:")
 	await message.answer_photo(
 		open('./images/cat.webp', 'rb'),
-		caption=f"Товар: Книга 1, Описание: Великолепная книга"
+		caption=f"Товар: Книга 1, Описание: Великолепная книга",
+		reply_markup=buy_item_kb
 	)
 
