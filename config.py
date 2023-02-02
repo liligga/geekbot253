@@ -9,3 +9,4 @@ bot = Bot(getenv('BOT_TOKEN'))
 # Диспетчер, получает сообщения, обрабатывает через обработчик
 storage = MemoryStorage()
 dp = Dispatcher(bot, storage=storage)
+CHANNEL = '@pyton253'

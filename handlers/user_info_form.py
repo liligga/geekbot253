@@ -6,6 +6,7 @@ from db.base import create_order
 
 
 class Form(StatesGroup):
+    product_id = State()
     name = State()
     # age = State()
     address = State()
@@ -24,12 +25,20 @@ async def cancel_handler(message: types.Message, state: FSMContext):
         reply_markup=types.ReplyKeyboardRemove())
 
 
-async def form_start(message: types.Message, state: FSMContext):
+async def form_start(cb: types.CallbackQuery, state: FSMContext):
     """
     Стартуем наш FSM, задаем первый вопрос
     """
-    await Form.name.set()
-    await message.answer("Введите ваше имя")
+
+    await Form.product_id.set()
+    async with state.proxy() as data:
+        data['product_id'] = int(cb.data.replace('buy_item ', ''))
+
+    await Form.next()
+    await cb.bot.send_message(
+        chat_id=cb.from_user.id,
+        text="Введите ваше имя"
+    )
 
 
 
@@ -114,6 +123,9 @@ async def process_day(message: types.Message, state: FSMContext):
     """, reply_markup=yes_no_kb)
 
 async def process_done(message: types.Message, state: FSMContext):
+    async with state.proxy() as data:
+        create_order(data)
+
     await state.finish()
     await message.reply(
         "Спасибо. Мы с вами свяжемся.",

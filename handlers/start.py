@@ -1,6 +1,7 @@
 from aiogram import types
 from handlers.constants import START_TEXT
 from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup
+from config import bot, CHANNEL
 
 
 start_kb = InlineKeyboardMarkup(resize_keyboard=True)
@@ -8,6 +9,7 @@ start_kb.add(
 	InlineKeyboardButton('Магазин', callback_data='shop_start'),
 	InlineKeyboardButton('Наш Адрес', callback_data='address')
 )
+
 
 
 
